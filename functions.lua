@@ -81,3 +81,23 @@ _G["?"] = function(a,b,c)
 		return c and c()
 	end
 end
+
+
+function j(...)
+	local vals = {run(...)}
+	if(vals[1]) then
+		local c = table.remove(vals, 1)
+		local t = {}
+		for i=1, #vals do
+			for c=1, #vals[i] do
+				t[#t+1] = vals[i][c]
+			end
+			if(i~=#vals)then
+				for C=1, #c do
+					t[#t+1] = c[C]
+				end
+			end
+		end
+		return list(t)
+	end
+end

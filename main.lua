@@ -43,6 +43,20 @@ functions = setmetatable({},{__index = _G}) do
 	f()
 end
 
+local escapes = {}
+escapes.n = '\n'
+escapes.r = '\r'
+escapes.t = '\t'
+escapes.a = '\a'
+
+
+local function escape(s)
+	if(escapes[s]) then
+		return escapes[s]
+	else
+		return s
+	end
+end
 
 
 function compile(s,p,d)
@@ -68,13 +82,18 @@ function compile(s,p,d)
 				pth = pth:set(x,y," ")
 				x = x + d[1]
 				y = y + d[2]
-				str = str .. s:get(x,y)
+				str = str .. escape(s:get(x,y))
 			elseif S == "\"" then
 				pth = pth:set(x,y," ")
 				x = x + d[1]
 				y = y + d[2]
 				pth = pth:set(x,y,"@")
-				local f = compile(pth, s:get(x,y), d)
+				local f
+				if(s:get(x,y):match("%S"))then
+					f = compile(pth, s:get(x,y), d)
+				else
+					f = function() end
+				end
 				return function(...)
 					local t = {list(str)}
 					for k,v in pairs({f(...)}) do
