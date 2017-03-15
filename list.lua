@@ -2,6 +2,13 @@
 local __list = {__index = __list}
 
 function list(t)
+	if(type(t)=='string')then
+		local T = {}
+		for s in t:gmatch"."do 
+			T[#T+1] = string.byte(s)
+		end
+		t=T
+	end
 	local l = setmetatable(t or {}, __list)
 	return l
 end

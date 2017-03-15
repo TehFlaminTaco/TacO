@@ -45,7 +45,7 @@ end
 
 
 
-function compile(s,p)
+function compile(s,p,d)
 	assert(({s:gsub("@","")})[2]==1, "Incorrect amount of @ detected.")
 
 	local x, y = s:get"@"
@@ -55,12 +55,45 @@ function compile(s,p)
 	if p and adj_b[p] then
 		adj = {adj_b[p]}
 	end
+
+	if p == "\"" then
+		local pth = s
+		local str = ""
+		while true do
+			pth = pth:set(x,y," ")
+			x = x + d[1]
+			y = y + d[2]
+			local S = s:get(x,y)
+			if S == "\\" then
+				pth = pth:set(x,y," ")
+				x = x + d[1]
+				y = y + d[2]
+				str = str .. s:get(x,y)
+			elseif S == "\"" then
+				pth = pth:set(x,y," ")
+				x = x + d[1]
+				y = y + d[2]
+				pth = pth:set(x,y,"@")
+				local f = compile(pth, s:get(x,y), d)
+				return function(...)
+					local t = {list(str)}
+					for k,v in pairs({f(...)}) do
+						t[#t+1] = v
+					end
+					return table.unpack(t)
+				end
+			else
+				str = str .. S
+			end
+		end
+	end
+
 	for k,v in pairs(adj) do
 		local S = s:get(v[1]+x,v[2]+y)
 		if(S:match("%S"))then
 			--print(s:set(x,y," "):set(x+v[1],y+v[2],"@"))
 			--print(s:set(x,y," "):set(x+v[1],y+v[2],"@"), S)
-			for k,v in pairs({compile(s:set(x,y," "):set(x+v[1],y+v[2],"@"), S)}) do
+			for k,v in pairs({compile(s:set(x,y," "):set(x+v[1],y+v[2],"@"), S, v)}) do
 				a[#a+1] = v
 			end
 		end
