@@ -87,15 +87,12 @@ function j(...)
 	local vals = {run(...)}
 	if(vals[1]) then
 		local c = table.remove(vals, 1)
-		local t = {}
+		local t
 		for i=1, #vals do
-			for c=1, #vals[i] do
-				t[#t+1] = vals[i][c]
-			end
-			if(i~=#vals)then
-				for C=1, #c do
-					t[#t+1] = c[C]
-				end
+			if t then
+				t = t + c + vals[i]
+			else
+				t = vals[i]
 			end
 		end
 		return list(t)
