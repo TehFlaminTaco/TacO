@@ -40,34 +40,19 @@ for i=0, 9 do
 end
 
 _G['+'] = function(...)
-	local n = 0
+	local n = nil
 	for k,v in pairs({run(...)}) do
-		n = n + v
+		if n then
+			n = n + v
+		else
+			n = v
+		end
 	end
 	return n
 end
 
 function l(...)
-	return {run(...)}
-end
-
-function s(...)
-	local t = {}
-	for k,v in pairs({run(...)}) do
-		if(type(v)=='table')then
-			local S = "{"
-			for i=1, #v do
-				S = S .. s(wrap(v[i]))
-				if(i~=#v) then
-					S = S .. ", "
-				end
-			end
-			t[#t+1] = S.."}"
-		else
-			t[#t+1] = tostring(v)
-		end
-	end
-	return table.unpack(t)
+	return list({run(...)})
 end
 
 _G["*"] = function(A,b)

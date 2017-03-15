@@ -11,6 +11,7 @@ function require(s)
 	return b()
 end
 require "stringhacks"
+require "list"
 
 -- Load the script.
 function load()
@@ -43,12 +44,17 @@ functions = setmetatable({},{__index = _G}) do
 end
 
 
-local adj = {{-1,0},{0,-1},{1,0},{0,1}}
+
 function compile(s,p)
 	assert(({s:gsub("@","")})[2]==1, "Incorrect amount of @ detected.")
 
 	local x, y = s:get"@"
 	local a = {}
+	local adj = {{-1,0},{0,-1},{1,0},{0,1}}
+	local adj_b = {['<']={-1,0},['^']={0,-1},['>']={1,0},v={0,1}}
+	if p and adj_b[p] then
+		adj = {adj_b[p]}
+	end
 	for k,v in pairs(adj) do
 		local S = s:get(v[1]+x,v[2]+y)
 		if(S:match("%S"))then
