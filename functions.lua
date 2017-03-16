@@ -160,3 +160,14 @@ _G['-'] = function(...)
 	end
 	return n
 end
+
+function n(n)
+	local v = n()
+	return #v
+
+end
+
+function e(l)
+	local l = l()
+	return table.unpack(l)
+end
