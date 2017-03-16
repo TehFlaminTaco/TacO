@@ -91,3 +91,5 @@ To raise a number to the power another, things get a bit more complicated. Howev
   #5
 ```
 These two programs both square `5`. The first does so by first repeating `5`, `2` times. Putting `5 5` on the branch. Then, the next `*` repeats `5`, `5` times. Putting `5, 5, 5, 5, 5` on the branch. Then, the `+` sums it.
+
+## Strings and Lists.

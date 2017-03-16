@@ -1,5 +1,5 @@
 
-local __list = {__index = __list}
+local __list = {__index = __list, __type = 'list'}
 
 function list(t)
 	if(type(t)=='string')then
@@ -24,8 +24,8 @@ end
 
 function __list.__add(a, b)
 	local o = list()
-	if(type(a)~='table')then a = {a} end
-	if(type(b)~='table')then b = {b} end
+	if(type(a)~='list')then a = {a} end
+	if(type(b)~='list')then b = {b} end
 	for i=1, #a do
 		o[#o+1] = a[i]
 	end

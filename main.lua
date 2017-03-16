@@ -10,8 +10,19 @@ function require(s)
 	end
 	return b()
 end
+require "otherhacks"
 require "stringhacks"
 require "list"
+local loadstring = load
+
+inputs = {}
+for i=2, #arg do
+	if(tonumber(arg[i]))then
+		inputs[#inputs+1] = tonumber(arg[i])
+	else
+		inputs[#inputs+1] = list(arg[i])
+	end
+end
 
 -- Load the script.
 function load()
@@ -43,16 +54,10 @@ functions = setmetatable({},{__index = _G}) do
 	f()
 end
 
-local escapes = {}
-escapes.n = '\n'
-escapes.r = '\r'
-escapes.t = '\t'
-escapes.a = '\a'
-
-
 local function escape(s)
-	if(escapes[s]) then
-		return escapes[s]
+	local b, e = loadstring('return "'..s..'"')
+	if b then
+		return b()
 	else
 		return s
 	end
@@ -82,7 +87,7 @@ function compile(s,p,d)
 				pth = pth:set(x,y," ")
 				x = x + d[1]
 				y = y + d[2]
-				str = str .. escape(s:get(x,y))
+				str = str .. '\\' .. s:get(x,y)
 			elseif S == "\"" then
 				pth = pth:set(x,y," ")
 				x = x + d[1]
@@ -94,6 +99,7 @@ function compile(s,p,d)
 				else
 					f = function() end
 				end
+				str = escape(str)
 				return function(...)
 					local t = {list(str)}
 					for k,v in pairs({f(...)}) do

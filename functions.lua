@@ -20,13 +20,13 @@ local function truthy(n)
 	if(type(n)=='string')then
 		return #n>0
 	end
-	if(type(n)=='table')then
+	if(type(n)=='list')then
 		return #n>0
 	end
 end
 
 function p(...)
-	print(s(...))
+	print(run(...))
 end
 
 for i=0, 9 do
@@ -76,7 +76,7 @@ end
 _G["?"] = function(a,b,c)
 	local A = run(a)
 	if(truthy(A)) then
-		return b()
+		return b and b()
 	else
 		return c and c()
 	end
@@ -97,4 +97,66 @@ function j(...)
 		end
 		return list(t)
 	end
+end
+
+_G['%'] = function(A,b)
+	local a = run(A)
+	local b = b
+	if not b then
+		b = function()
+			return ({A()})[2]
+		end
+	end
+	if not a then return b() end
+	if(type(a)=='number' or type(a)=='string')then
+		a = tonumber(a)
+		local l = list()
+		for i=1, a do
+			l[#l+1] = i
+		end
+		a = l
+	end
+	if(type(a)=='list')then
+		local t = {}
+		for i=1,#a do
+			table.insert(inputs,1,a[i])
+			for k,v in pairs({b()}) do
+				t[#t+1] = v
+			end
+			table.remove(inputs,1)
+		end
+		return table.unpack(t)
+	end
+end
+--[[
+_G['$'] = function(condition, run, finally)
+	local v = condition()
+	while truthy(v) do
+		run()
+		v = condition()
+	end
+	finally()
+end
+--]]
+
+function i(n)
+	local i = 1
+	if(n)then
+		local v = n()
+		if v then
+			i = tonumber(v)
+		end
+	end
+	return inputs[i]
+end
+
+_G['-'] = function(...)
+	local t = {run(...)}
+	local n = table.remove(t,1)
+	if n then
+		while(#t>0)do
+			n = n - table.remove(t,1)
+		end
+	end
+	return n
 end
