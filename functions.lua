@@ -163,8 +163,20 @@ end
 
 function n(n)
 	local v = n()
-	return #v
+	if(type(v)=='number')then
+		return v
+	else
+		return #v
+	end
+end
 
+function g(...)
+	local t = {run(...)}
+	local val = t[1] or {}
+	local i = t[2] or 1
+	if(#val > 0)then i = i % #val end
+	if(i==0)then i = #val end
+	return val[i]
 end
 
 function e(l)

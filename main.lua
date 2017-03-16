@@ -1,9 +1,11 @@
 local r = require
+local path = ""
 function require(s)
 	if not arg[0] then
 		return r(s)
 	end
-	local p = arg[0]:match("(.*[\\/])")
+	local p = arg[0]:match("(.*[\\/])") or ""
+	path = p
 	local b, e = loadfile(p..s:gsub("%.","\\")..".lua")
 	if(not b) then
 		error(e)
@@ -26,7 +28,7 @@ end
 
 -- Load the script.
 function load()
-	local fn = arg[1] or "code.tac"
+	local fn = arg[1] or (path.."code.tac")
 	local f = assert(io.open(fn,"r"), string.format("Could not open file %s!", fn))
 	local s = f:read("*a"):gsub("[^\n]+",function(s)
 			local o = ""
@@ -48,7 +50,7 @@ end
 
 -- Load the functions table.
 functions = setmetatable({},{__index = _G}) do
-	local f,r = loadfile("functions.lua")
+	local f,r = loadfile(path.."functions.lua")
 	if(not f) then error(r) end
 	debug.setupvalue(f,1,functions) -- 1 is the default for _ENV for loadfile
 	f()
