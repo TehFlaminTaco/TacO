@@ -25,7 +25,8 @@ function str.set(s, x, y, S)
 	for S in s:gmatch("[^\n]*") do
 		t[#t+1] = S
 	end
-	if y > #t then
+	if y < 1 then
+	elseif y > #t then
 		t[y] = (" "):rep(x-1)..S
 	elseif x>#t[y] then
 		t[y] = t[y] .. (" "):rep((x-1) - #t[y]) .. S

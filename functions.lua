@@ -29,6 +29,14 @@ function p(...)
 	print(run(...))
 end
 
+function w(...)
+	local t = {}
+	for k,v in pairs({run(...)}) do
+		t[#t+1] = tostring(v)
+	end
+	io.write(table.unpack(t))
+end
+
 for i=0, 9 do
 	_G[i..''] = function(...)
 		local s = i
@@ -168,6 +176,14 @@ function n(n)
 	else
 		return #v
 	end
+end
+
+function s(...)
+	local t = {}
+	for k,v in pairs({run(...)}) do
+		t[#t+1] = list(tostring(v))
+	end
+	return table.unpack(t)
 end
 
 function g(...)
