@@ -136,16 +136,16 @@ _G['%'] = function(A,b)
 		return table.unpack(t)
 	end
 end
---[[
+
+
 _G['$'] = function(condition, run, finally)
 	local v = condition()
 	while truthy(v) do
-		run()
-		v = condition()
+		if run then run() end
+		v = condition and condition()
 	end
-	finally()
+	if finally then finally() end
 end
---]]
 
 function i(n)
 	local i = 1
@@ -190,12 +190,26 @@ function g(...)
 	local t = {run(...)}
 	local val = t[1] or {}
 	local i = t[2] or 1
+	if(type(val)=='list')then
 	if(#val > 0)then i = i % #val end
 	if(i==0)then i = #val end
 	return val[i]
+	end
 end
 
 function e(l)
 	local l = l()
 	return table.unpack(l)
+end
+
+local mem = {}
+
+function m(...)
+	local a = run(...)
+	return mem[a or ''] or 0
+end
+
+function M(...)
+	local a,b = run(...)
+	mem[a or ''] = b
 end
