@@ -137,7 +137,7 @@ _G['%'] = function(A,b)
 	end
 end
 
-
+--[[
 _G['$'] = function(condition, run, finally)
 	local v = condition()
 	while truthy(v) do
@@ -146,7 +146,7 @@ _G['$'] = function(condition, run, finally)
 	end
 	if finally then finally() end
 end
-
+--]]
 function i(n)
 	local i = 1
 	if(n)then
@@ -200,16 +200,4 @@ end
 function e(l)
 	local l = l()
 	return table.unpack(l)
-end
-
-local mem = {}
-
-function m(...)
-	local a = run(...)
-	return mem[a or ''] or 0
-end
-
-function M(...)
-	local a,b = run(...)
-	mem[a or ''] = b
 end
