@@ -3,7 +3,7 @@ A 2D Tac-It Language.
 
 ## Basics
 
-TacO is a strange approch to language design, combining a 2D Language with a Taccing one, the code runs as interconnected chains.
+TacO is a strange approach to language design, combining a 2D Language with a Taccing one, the code runs as interconnected chains.
 
 The firsts and most important character is the `@`. It designates where the program should "Start".
 
