@@ -93,3 +93,100 @@ To raise a number to the power another, things get a bit more complicated. Howev
 These two programs both square `5`. The first does so by first repeating `5`, `2` times. Putting `5 5` on the branch. Then, the next `*` repeats `5`, `5` times. Putting `5, 5, 5, 5, 5` on the branch. Then, the `+` sums it.
 
 ## Strings and Lists.
+
+In TacO, a string is just a list of UTF-8 bytes. _(There is no char construct)_.
+Constructing a list of numbers will make it implicitly print as a string of characters. For example.
+```
+@l#########
+  1 1 1 1 7
+  1 0 0 0 2
+  1 8 8 1
+```
+The above script places the numbers 72, 101, 108, 108 then 111 into a list via the `l` character. Which is then printed as the word `Hello`.
+
+The more appropriate method to write this string however is:
+```
+@"Hello"
+```
+Like most langauges, escape characters such as `\n` work, and like most 2d languages, the string is constructed in the last direction of the branch.
+
+```
+@
+p
+"Hello, World"
+```
+Is incorrect, and will result in the compile stage soft-crashing.
+```
+@
+p
+"
+H
+e
+l
+l
+o
+,
+
+W
+o
+r
+l
+d
+"
+```
+Is more correct. As is:
+```
+@
+p"Hello, World!"
+```
+
+Although flat number lists are the most common type of list, a list can also hold other lists. Make of that what you will.
+
+## Conditionals, Looping, and Input
+
+Conditionals are the simplest form of actual branching. The conditional character `?` takes an input variable, and two branches. If the variable is truthy, use branch one, otherwise, use branch two.
+```
+ 1
+@?"True"
+ "
+ F
+ a
+ l
+ s
+ e
+ "
+```
+The above code is a branching statement, if `1` is truthy, it will return `"True"`, otherwise, it will return `"False"`
+
+These _have_ to be branches, that is,
+```
+  1 2 3
+#?#####
+```
+
+Won't return `2` if `1` is truthy and `3` otherwise, instead it wont return anything.
+
+The `i` character gets input, and can optionally take a number argument to get the `n`th input. This is important, because in a loop, all the inputs are moved over by one.
+
+Assume the number 3 is on the command line.
+```
+@i
+```
+Will print that 3.
+If `3` and `2` are on the command lines, then they can be acessed with `i` or `i1` and `i2`.
+
+The looping construct is `%`. If this construct is passed a number on the first branch, it will loop through all numbers from 1 to `n`, running the second branch, passing that currently iterated number to the input. If it's passed a list, it will iterate through all the elements of the list, passing their elements.
+```
+@%5
+ i
+```
+The above code prints numbers 1-5. The `5` is the first branch of the looping construct, so it runs the second branch, which just contains `i`, 5 times, giving `i` numbers 1 - 5.
+
+You can still access those lower inputs, as they were just pushed to the right. For example.
+```
+@%i
+ +/
+ i
+ 2
+```
+The above code loops through all numbers from 1-i, and adds i to them. For the input 3, the output is `4, 5, 6`. The self referenced `i` by the second branch gets the current iteration, the `i2` gets the initial input.
