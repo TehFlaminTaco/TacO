@@ -34,3 +34,12 @@ function __list.__add(a, b)
 	end
 	return o
 end
+
+function __list.__call(t)
+	t.__i = (t.__i or 0)+1
+	if(t.__i > #t)then
+		t.__i = 0
+		return nil
+	end
+	return t.__i, t[t.__i]
+end

@@ -190,3 +190,22 @@ You can still access those lower inputs, as they were just pushed to the right. 
  2
 ```
 The above code loops through all numbers from 1-i, and adds i to them. For the input 3, the output is `4, 5, 6`. The self referenced `i` by the second branch gets the current iteration, the `i2` gets the initial input.
+
+## All the Functions
+
+* `@`: The IP start point. Only one per program, please.
+* `+`: Sums all the inputs, and returns as a single number/list.
+* `*`: Take a single number from the first branch. If there's a second branch, run that the first number times, otherwise, just return the second value on the first branch repeated the first value times.
+* `0-9`: All numbers push themselves concatenated to the front of it's arguments. `@1#2` pushes `12`, for example.
+* `<^>v`: Branch restrictors, can only branch in the direction they point.
+* `#`: Intentional no-op. Does absolutely nothing.
+* `p`: Write all arguments (Separated by tabs) to STDOUT, followed by a newline.
+* `w`: Write all arguments, concatenated together, to STDOUT.
+* `j`: Concatenate a list or strings(lists) (second arguemnt), separated by the first argument.
+* `i`: Get the first argument numbered input, or the first if none is specified. In a loop, the iterator is first.
+* `-`: Subtract all the arguments, in order. Return the output.
+* `n`: Try to convert a list to a number.
+* `s`: Get a list representation of a number.
+* `g`: Get the value at index (second argument) of the list in the first argument.
+* `?`: If the first return value of the first branch is truthy, execute the second one, else, optionally execute the third.
+* `%`: Take the first return value of the first branch. If it's a list, execute the second branch with each value of the list. If it's a number, execute the second branch with each number 1-n.
