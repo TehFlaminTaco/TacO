@@ -57,6 +57,7 @@ functions = setmetatable({},{__index = _G}) do
 end
 
 local function escape(s)
+	s = s:gsub("^\\s","@"):gsub("([^\\])\\s","%1@")
 	local b, e = loadstring('return "'..s..'"')
 	if b then
 		return b()
